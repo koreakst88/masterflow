@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 
-const ROOT_ROUTES = ['/', '/catalog', '/bookings', '/profile']
+const ROOT_ROUTES = ['/']
 
 export function useBackButton() {
   const navigate = useNavigate()

@@ -4,6 +4,7 @@ export const MASTER = {
   studio: 'Masterflow',
   greeting: 'Записаться к мастеру',
   telegram_id: import.meta.env.VITE_MASTER_TG_ID,
+  master_tg_id: Number(import.meta.env.VITE_MASTER_TG_ID),
   accent: '#D4537E',
   bg: '#FDF6F0',
   city: 'Сеул',

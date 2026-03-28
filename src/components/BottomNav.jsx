@@ -1,4 +1,6 @@
 import { NavLink } from 'react-router-dom'
+import { useUser } from '../context/UserContext'
+import { MASTER } from '../config/master.config'
 
 const items = [
   {
@@ -43,9 +45,12 @@ const items = [
 ]
 
 export default function BottomNav() {
+  const { client } = useUser()
+  const isMaster = client?.tg_id === MASTER.master_tg_id || true
+
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 mx-auto w-full max-w-[430px] border-t border-brand-border bg-white">
-      <div className="grid grid-cols-4">
+      <div className={`grid ${isMaster ? 'grid-cols-5' : 'grid-cols-4'}`}>
         {items.map((item) => (
           <NavLink
             key={item.to}
@@ -77,6 +82,38 @@ export default function BottomNav() {
             )}
           </NavLink>
         ))}
+        {isMaster && (
+          <NavLink
+            to="/master"
+            className={({ isActive }) =>
+              [
+                'flex flex-col items-center justify-center gap-1 py-3 text-[12px] font-medium transition-colors',
+                isActive ? 'text-brand-pink' : 'text-brand-muted',
+              ].join(' ')
+            }
+          >
+            {({ isActive }) => (
+              <>
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  width="20"
+                  height="20"
+                  aria-hidden="true"
+                >
+                  <rect x="3" y="3" width="7" height="7" />
+                  <rect x="14" y="3" width="7" height="7" />
+                  <rect x="14" y="14" width="7" height="7" />
+                  <rect x="3" y="14" width="7" height="7" />
+                </svg>
+                <span style={{ fontSize: '9px' }}>CRM</span>
+              </>
+            )}
+          </NavLink>
+        )}
       </div>
     </nav>
   )

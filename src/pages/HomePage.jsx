@@ -1,11 +1,16 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { MASTER } from '../config/master.config'
 import { useUser } from '../context/UserContext'
+import { useTelegram } from '../hooks/useTelegram'
 
 export default function HomePage() {
   const navigate = useNavigate()
   const { client } = useUser()
+  const { user } = useTelegram()
   const firstName = client?.name?.split(' ')[0] ?? 'Гость'
+  const photoUrl = user?.photo_url
+  const [avatarError, setAvatarError] = useState(false)
 
   return (
     <div className="min-h-screen pb-24" style={{ background: MASTER.bg }}>
@@ -26,10 +31,21 @@ export default function HomePage() {
           </p>
         </div>
         <div
-          className="h-9 w-9 flex-shrink-0 rounded-full flex items-center justify-center text-xs font-medium"
+          className="h-9 w-9 flex-shrink-0 overflow-hidden rounded-full flex items-center justify-center text-xs font-medium"
           style={{ background: '#FBEAF0', color: MASTER.accent, border: '1px solid #F4C0D1' }}
         >
-          {firstName.slice(0, 2).toUpperCase()}
+          {photoUrl && !avatarError ? (
+            <img
+              src={photoUrl}
+              alt={firstName}
+              className="h-full w-full object-cover"
+              onError={(e) => {
+                setAvatarError(true)
+              }}
+            />
+          ) : (
+            firstName.slice(0, 2).toUpperCase()
+          )}
         </div>
       </div>
 

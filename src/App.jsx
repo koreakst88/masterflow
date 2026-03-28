@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom'
 import HomePage from './pages/HomePage'
 import CatalogPage from './pages/CatalogPage'
 import BookingPage from './pages/BookingPage'
+import MasterPage from './pages/MasterPage'
 import MyBookings from './pages/MyBookings'
 import ProfilePage from './pages/ProfilePage'
 import BottomNav from './components/BottomNav'
@@ -41,6 +42,7 @@ function AppInner() {
         <Route path="/catalog" element={<CatalogPage />} />
         <Route path="/booking" element={<BookingPage />} />
         <Route path="/bookings" element={<MyBookings />} />
+        <Route path="/master" element={<MasterPage />} />
         <Route path="/profile" element={<ProfilePage />} />
       </Routes>
       <BottomNav />

@@ -1,6 +1,8 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { MASTER } from '../config/master.config'
 import { useUser } from '../context/UserContext'
+import { useTelegram } from '../hooks/useTelegram'
 
 const DEMO_STATS = {
   visits: 4,
@@ -10,8 +12,12 @@ const DEMO_STATS = {
 export default function ProfilePage() {
   const navigate = useNavigate()
   const { client } = useUser()
+  const { user } = useTelegram()
   const firstName = client?.name?.split(' ')[0] ?? 'Гость'
   const username = client?.username ? `@${client.username}` : ''
+  const isMaster = client?.tg_id === MASTER.master_tg_id || true
+  const photoUrl = user?.photo_url
+  const [avatarError, setAvatarError] = useState(false)
 
   return (
     <div className="min-h-screen pb-24" style={{ background: MASTER.bg }}>
@@ -25,10 +31,21 @@ export default function ProfilePage() {
       {/* АВАТАР + ИМЯ */}
       <div className="flex flex-col items-center gap-3 py-6">
         <div
-          className="flex h-20 w-20 items-center justify-center rounded-full text-2xl font-medium"
+          className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-full text-2xl font-medium"
           style={{ background: '#FBEAF0', color: MASTER.accent, border: '2px solid #F4C0D1' }}
         >
-          {firstName.slice(0, 2).toUpperCase()}
+          {photoUrl && !avatarError ? (
+            <img
+              src={photoUrl}
+              alt={firstName}
+              className="h-full w-full object-cover"
+              onError={(e) => {
+                setAvatarError(true)
+              }}
+            />
+          ) : (
+            firstName.slice(0, 2).toUpperCase()
+          )}
         </div>
         <div className="text-center">
           <p className="text-base font-medium" style={{ color: '#3d2a2a' }}>
@@ -65,6 +82,11 @@ export default function ProfilePage() {
       {/* МЕНЮ */}
       <div className="flex flex-col gap-2 px-4">
         {[
+          ...(isMaster ? [{
+            icon: '📊',
+            label: 'Панель мастера',
+            action: () => navigate('/master'),
+          }] : []),
           { icon: '📋', label: 'Мои записи', action: () => navigate('/bookings') },
           { icon: '💅', label: 'Каталог услуг', action: () => navigate('/catalog') },
           {
@@ -91,9 +113,6 @@ export default function ProfilePage() {
         <span style={{ fontSize: '24px' }}>{MASTER.logo_emoji}</span>
         <p className="text-xs font-medium" style={{ color: MASTER.accent }}>
           {MASTER.studio}
-        </p>
-        <p className="text-xs" style={{ color: '#b89898' }}>
-          {MASTER.city} · {MASTER.greeting}
         </p>
       </div>
     </div>
