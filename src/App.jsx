@@ -1,5 +1,5 @@
-import { useEffect } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { useEffect, useLayoutEffect } from 'react'
+import { Routes, Route, useLocation } from 'react-router-dom'
 import HomePage from './pages/HomePage'
 import CatalogPage from './pages/CatalogPage'
 import BookingPage from './pages/BookingPage'
@@ -11,6 +11,18 @@ import { MASTER } from './config/master.config'
 import { useUser } from './context/UserContext'
 import { useBackButton } from './hooks/useBackButton'
 import { useTelegram } from './hooks/useTelegram'
+
+function ScrollToTop() {
+  const location = useLocation()
+
+  useLayoutEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+    document.documentElement.scrollTop = 0
+    document.body.scrollTop = 0
+  }, [location.pathname, location.search])
+
+  return null
+}
 
 function AppInner() {
   const { ready } = useTelegram()
@@ -37,6 +49,7 @@ function AppInner() {
 
   return (
     <div className="pb-20">
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/catalog" element={<CatalogPage />} />
