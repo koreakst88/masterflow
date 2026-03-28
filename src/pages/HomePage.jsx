@@ -76,9 +76,13 @@ export default function HomePage() {
         <h3 className="text-sm font-medium" style={{ color: '#3d2a2a' }}>
           ⚡ Ближайшие слоты
         </h3>
-        <span className="cursor-pointer text-xs" style={{ color: MASTER.accent }}>
+        <button
+          onClick={() => navigate('/booking')}
+          className="cursor-pointer text-xs"
+          style={{ color: MASTER.accent }}
+        >
           Все →
-        </span>
+        </button>
       </div>
       <div className="scrollbar-hide flex gap-2 overflow-x-auto px-4 pb-1">
         {['Сегодня 15:00', 'Сегодня 16:30', 'Завтра 11:00'].map((slot) => (
