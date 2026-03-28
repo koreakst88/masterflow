@@ -14,11 +14,18 @@ export async function getServices() {
 export async function upsertClient({ tg_id, name, username }) {
   const { data, error } = await supabase
     .from('clients')
-    .upsert({ tg_id, name, username }, { onConflict: 'tg_id' })
-    .select()
+    .upsert(
+      { tg_id, name, username },
+      { onConflict: 'tg_id', ignoreDuplicates: false }
+    )
+    .select('*')
     .single()
 
-  if (error) throw error
+  if (error) {
+    console.error('upsertClient error:', error)
+    throw error
+  }
+  console.log('upsertClient result:', data)
   return data
 }
 

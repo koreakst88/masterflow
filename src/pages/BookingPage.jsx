@@ -64,13 +64,13 @@ export default function BookingPage() {
   }
 
   async function handleConfirm() {
-    if (!selectedTime || !client?.id) return
+    if (!selectedTime) return
     setSaving(true)
     setError(null)
     try {
       const dateStr = selectedDate.toISOString().split('T')[0]
       await createBooking({
-        clientId: client.id,
+        clientId: client?.id > 0 ? client.id : null,
         serviceIds: [service.id],
         date: dateStr,
         timeSlot: selectedTime,

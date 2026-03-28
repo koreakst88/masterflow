@@ -11,29 +11,27 @@ export function UserProvider({ children }) {
 
   useEffect(() => {
     async function init() {
+      const tg_id = isInTelegram && user?.id ? user.id : 999999999
+      const name = isInTelegram && user?.first_name
+        ? [user.first_name, user.last_name].filter(Boolean).join(' ')
+        : 'Евгений'
+      const username = isInTelegram && user?.username
+        ? user.username
+        : 'demo'
+
+      console.log('Auth init:', { tg_id, name, username, isInTelegram })
+
       try {
-        if (isInTelegram && user?.id) {
-          const data = await upsertClient({
-            tg_id: user.id,
-            name: [user.first_name, user.last_name].filter(Boolean).join(' '),
-            username: user.username ?? null,
-          })
-          setClient(data)
-        } else {
-          const data = await upsertClient({
-            tg_id: 999999999,
-            name: 'Евгений',
-            username: 'evgeniy_demo',
-          })
-          setClient(data)
-        }
+        const data = await upsertClient({ tg_id, name, username })
+        console.log('Client set:', data)
+        setClient(data)
       } catch (e) {
-        console.error('Auth error:', e)
+        console.error('upsertClient failed:', e)
         setClient({
-          id: null,
+          id: -1,
           tg_id: 999999999,
           name: 'Евгений',
-          username: 'evgeniy_demo',
+          username: 'demo',
         })
       } finally {
         setLoading(false)
