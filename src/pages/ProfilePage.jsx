@@ -1,0 +1,101 @@
+import { useNavigate } from 'react-router-dom'
+import { MASTER } from '../config/master.config'
+import { useUser } from '../context/UserContext'
+
+const DEMO_STATS = {
+  visits: 4,
+  totalSpent: 26000,
+}
+
+export default function ProfilePage() {
+  const navigate = useNavigate()
+  const { client } = useUser()
+  const firstName = client?.name?.split(' ')[0] ?? 'Гость'
+  const username = client?.username ? `@${client.username}` : ''
+
+  return (
+    <div className="min-h-screen pb-24" style={{ background: MASTER.bg }}>
+      {/* HEADER */}
+      <div className="px-4 pb-2 pt-4">
+        <h1 className="text-base font-medium" style={{ color: '#3d2a2a' }}>
+          Профиль
+        </h1>
+      </div>
+
+      {/* АВАТАР + ИМЯ */}
+      <div className="flex flex-col items-center gap-3 py-6">
+        <div
+          className="flex h-20 w-20 items-center justify-center rounded-full text-2xl font-medium"
+          style={{ background: '#FBEAF0', color: MASTER.accent, border: '2px solid #F4C0D1' }}
+        >
+          {firstName.slice(0, 2).toUpperCase()}
+        </div>
+        <div className="text-center">
+          <p className="text-base font-medium" style={{ color: '#3d2a2a' }}>
+            {firstName}
+          </p>
+          <p className="mt-0.5 text-xs" style={{ color: '#b89898' }}>
+            {username}
+          </p>
+        </div>
+      </div>
+
+      {/* СТАТИСТИКА */}
+      <div className="mb-4 grid grid-cols-2 gap-3 px-4">
+        <div
+          className="flex flex-col items-center gap-1 rounded-2xl bg-white p-4"
+          style={{ border: '0.5px solid #F0D8D8' }}
+        >
+          <p className="text-2xl font-medium" style={{ color: MASTER.accent }}>
+            {DEMO_STATS.visits}
+          </p>
+          <p className="text-xs" style={{ color: '#b89898' }}>визита</p>
+        </div>
+        <div
+          className="flex flex-col items-center gap-1 rounded-2xl bg-white p-4"
+          style={{ border: '0.5px solid #F0D8D8' }}
+        >
+          <p className="text-2xl font-medium" style={{ color: MASTER.accent }}>
+            {MASTER.currency}{DEMO_STATS.totalSpent.toLocaleString()}
+          </p>
+          <p className="text-xs" style={{ color: '#b89898' }}>потрачено</p>
+        </div>
+      </div>
+
+      {/* МЕНЮ */}
+      <div className="flex flex-col gap-2 px-4">
+        {[
+          { icon: '📋', label: 'Мои записи', action: () => navigate('/bookings') },
+          { icon: '💅', label: 'Каталог услуг', action: () => navigate('/catalog') },
+          {
+            icon: '📞',
+            label: 'Связаться с мастером',
+            action: () => window.open(`https://t.me/${MASTER.studio}`, '_blank'),
+          },
+        ].map((item, i) => (
+          <button
+            key={i}
+            onClick={item.action}
+            className="flex w-full items-center gap-3 rounded-2xl bg-white px-4 py-3.5 text-left text-sm"
+            style={{ border: '0.5px solid #F0D8D8', color: '#3d2a2a' }}
+          >
+            <span style={{ fontSize: '16px' }}>{item.icon}</span>
+            <span className="flex-1">{item.label}</span>
+            <span style={{ color: '#b89898' }}>→</span>
+          </button>
+        ))}
+      </div>
+
+      {/* СТУДИЯ */}
+      <div className="mt-8 flex flex-col items-center gap-1 pb-4">
+        <span style={{ fontSize: '24px' }}>{MASTER.logo_emoji}</span>
+        <p className="text-xs font-medium" style={{ color: MASTER.accent }}>
+          {MASTER.studio}
+        </p>
+        <p className="text-xs" style={{ color: '#b89898' }}>
+          {MASTER.city} · {MASTER.greeting}
+        </p>
+      </div>
+    </div>
+  )
+}
