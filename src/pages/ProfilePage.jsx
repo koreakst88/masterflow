@@ -94,11 +94,6 @@ export default function ProfilePage() {
             label: 'Связаться с мастером',
             action: () => window.open(`https://t.me/${MASTER.studio}`, '_blank'),
           },
-          {
-            icon: '💬',
-            label: 'Связаться с разработчиком',
-            action: () => window.open('https://t.me/koreakim88', '_blank'),
-          },
         ].map((item, i) => (
           <button
             key={i}
@@ -111,6 +106,41 @@ export default function ProfilePage() {
             <span style={{ color: '#b89898' }}>→</span>
           </button>
         ))}
+      </div>
+
+      <div className="mt-5 px-4">
+        <div
+          className="rounded-3xl p-4"
+          style={{
+            background: 'linear-gradient(135deg, #fff 0%, #FBEAF0 100%)',
+            border: '1px solid #F4C0D1',
+          }}
+        >
+          <div className="flex items-start gap-3">
+            <div
+              className="flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-2xl"
+              style={{ background: MASTER.accent, color: '#fff' }}
+            >
+              💬
+            </div>
+            <div className="flex-1">
+              <p className="text-sm font-medium" style={{ color: '#3d2a2a' }}>
+                Понравилось приложение?
+              </p>
+              <p className="mt-1 text-xs leading-5" style={{ color: '#b89898' }}>
+                Могу сделать Telegram Mini App для вашего бизнеса
+              </p>
+            </div>
+          </div>
+
+          <button
+            onClick={() => window.open('https://t.me/koreakim88', '_blank')}
+            className="mt-4 w-full rounded-2xl py-3 text-sm font-medium"
+            style={{ background: MASTER.accent, color: '#fff' }}
+          >
+            Связаться с разработчиком
+          </button>
+        </div>
       </div>
 
       {/* СТУДИЯ */}
