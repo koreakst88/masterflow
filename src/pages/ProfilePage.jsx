@@ -94,6 +94,11 @@ export default function ProfilePage() {
             label: 'Связаться с мастером',
             action: () => window.open(`https://t.me/${MASTER.studio}`, '_blank'),
           },
+          {
+            icon: '💬',
+            label: 'Связаться с разработчиком',
+            action: () => window.open('https://t.me/koreakim88', '_blank'),
+          },
         ].map((item, i) => (
           <button
             key={i}
